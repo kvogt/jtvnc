@@ -14,6 +14,14 @@ def _down(x, y):
 def _up(x, y):
     if plat == 'win':
         win32api.mouse_event(win32con.MOUSEEVENTF_LEFTUP, int(x), int(y))
+        
+def _keydown(id):
+    if plat == 'win':
+        win32api.keybd_event(id, 0, 0, 0)
+
+def _keyup(id):
+    if plat == 'win':
+        win32api.keybd_event(id, 0, win32con.KEYEVENTF_KEYUP, 0)
     
 def click(x, y, delay=0.05):
     print "CLICK x: %s y: %s" % (x, y)

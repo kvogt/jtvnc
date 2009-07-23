@@ -29,6 +29,16 @@ class Server:
         return "Mouse up at %s, %s." % (x, y)
 
     @cherrypy.expose
+    def keydown(self, id=None):
+        gui._keydown(id)
+        return "Key id %s pressed." % id
+
+    @cherrypy.expose
+    def keyup(self, id=None):
+        gui._keyup(id)
+        return "Key id %s depressed." % id
+
+    @cherrypy.expose
     def click(self, x=None, y=None, delay=0.1):
         gui.click(x, y, delay)
         return "Clicked at %s, %s." % (x, y)
