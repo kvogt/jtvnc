@@ -1,88 +1,22 @@
 <html>
 <head>
 	<title>Flash desktop viewer</title>
-	<script>
-	
-	var mx = 0
-	var my = 0;
-	var ms = "up";
-	var dirty = false;
-	var keys = new Array();
-	
-	function updateMouse(e) {
-		e = window.event ? window.event : e;
-		if (e.clientX != mx || e.clientY != my) {
-			mx = e.clientX;
-			my = e.clientY;
-			dirty = true;
-		}
-	}
-	
-	function keyDown(e) {
-		var id = (window.event) ? event.keyCode : e.keyCode;
-		keys.push(id);
-		call('http://10.0.1.163:8000/keydown?id=' + id);
-	}
-	
-	function keyUp(e) {
-		var id = (window.event) ? event.keyCode : e.keyCode;
-		keys = keys.splice(keys.indexOf(id), 1);
-		call('http://10.0.1.163:8000/keyup?id=' + id);
-	}
-	
-	function getState() {
-		var obj = document.getElementById('desktop');
-		var curleft = curtop = 0;
-		var pos = new Object();
-		do {
-			curleft += obj.offsetLeft;
-			curtop += obj.offsetTop;
-		} while (obj = obj.offsetParent);
-		pos.x = mx - curleft;
-		pos.y = my - curtop;
-		if (pos.x < 0) pos.x = 0;
-		if (pos.y < 0) pos.y = 0;
-		return pos;
-	}
-	
-	function call(url) {
-		var req = null;
-		req = new XMLHttpRequest(); 
-		req.open("GET", url, true);
-		req.send(null);
-	}
-		
-	function mouseMove(pos) {
-		call('http://10.0.1.163:8000/move?x=' + pos.x + '&y=' + pos.y);
-	}
-
-	function mouseUp() {
-		pos = getState();
-		ms = "up";
-		call('http://10.0.1.163:8000/up?x=' + pos.x + '&y=' + pos.y);
-	}
-
-	function mouseDown() {
-		pos = getState();
-		ms = "down";
-		call('http://10.0.1.163:8000/down?x=' + pos.x + '&y=' + pos.y);
-	}
-	
-	function loop() {
-		pos = getState();
-		var status = 'x: ' + pos.x + ' y: ' + pos.y + ' mouse: ' + ms + ' keys: ' + keys.join(',');
-	    document.getElementById('desktop').innerText = status;
-		if (dirty) {
-			mouseMove(pos);
-			dirty = false;
-		}
-	}
-	
-	setInterval(loop, 100);
-	
-	</script>
+	<script src="AC_RunActiveContent.js" language="javascript" />
+	<script src="ui.js" language="javascript" />
 </head>
 <body onkeyup="return keyUp(event);" onkeydown="return keyDown(event);" >
-	<div onmousemove=updateMouse() onmousedown=mouseDown() onmouseup=mouseUp() id="desktop" style="width: 100%; height: 100%; background-color: #FF0000;"><div>
+	<form name="status">
+		X:<input id="mx" maxlenght="6" type="text">Y:<input id="my" maxlenght="6" type="text">Mouse:<input id="mouse" maxlenght="6" type="text">Keys:<input id="keys" maxlenght="6" type="text">
+	</form>
+	<object classid="clsid:d27cdb6e-ae6d-11cf-96b8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=9,0,0,0" width="100%" height="100%" id="test_loader" align="middle" style="position: absolute; left: 0px; top: 30px;">
+	<param name="allowScriptAccess" value="sameDomain" />
+	<param name="allowFullScreen" value="false" />
+	<param NAME="wmode" VALUE="transparent">
+	<param name="movie" value="test_loader.swf" /><param name="quality" value="high" /><param name="bgcolor" value="#ffffff" />	<embed src="test_loader.swf" quality="high" bgcolor="#ffffff" width="100%" height="100%" name="test_loader" align="middle" allowScriptAccess="sameDomain" allowFullScreen="false" type="application/x-shockwave-flash" pluginspage="http://www.macromedia.com/go/getflashplayer" />
+	</object>
+	
+	<div onmousemove=updateMouse() onmousedown=mouseDown() onmouseup=mouseUp() id="desktop" style="width: 100%; height: 100%; position: absolute; left: 0px; top: 30px;">
+	</div>
+
 </body>
 </html>
