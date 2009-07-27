@@ -2,9 +2,11 @@ var mx = 0
 var my = 0;
 var ms = "up";
 var dirty = false;
-//var host = 'win1.justin.tv:8000';
-var host = '10.0.1.163:8000';
 var keys = new Array();
+
+// Point this at your the ip an port where server.py is running
+var host = '10.0.1.163:8000';
+
 
 function updateMouse(e) {
 	e = window.event ? window.event : e;
